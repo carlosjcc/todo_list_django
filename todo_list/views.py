@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib import messages
 
 from .models import List
@@ -22,3 +22,10 @@ def about(request):
     my_name = "Carlos"
     context = {'name':my_name, 'last_name': 'Corrales'}
     return render(request, 'about.html', context)
+
+def delete(request, list_id):
+    item = List.objects.get(pk=list_id)
+    item.delete()
+    messages.success(request, ('Item Has Been Deleted!'))
+    return redirect('home')
+
