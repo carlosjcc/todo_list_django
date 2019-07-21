@@ -3,38 +3,84 @@
 {% block title %} To-Do List {% endblock %}
 
 {% block content %}
-
-{% if messages %}
     
-    {% for m in messages %}
-        <div class="alert alert-success alert-dismissable" role="alert">
-            <button class="close" data-dismiss="alert">
-                <small><sup>x</sup></small>
-            </button>
-                {{ m }}
-        </div>
-    {% endfor %}
+    <!-- List with avatar and controls -->
+    <style>
+    .demo-list-control {
+      width: 300px;
+    }
 
-{% endif %}
+    .demo-list-radio {
+      display: inline;
+    }
+    </style>
+
+    {% if messages %}
+
+        {% for m in messages %}
+            <div class="alert alert-success alert-dismissable" role="alert">
+                <button class="close" data-dismiss="alert">
+                    <small><sup>x</sup></small>
+                </button>
+                    {{ m }}
+            </div>
+        {% endfor %}
+
+    {% endif %}
     
     {% if all_items %}
-    <table class="table table-bordered">
+    <ul class="demo-list-control mdl-list">
         {% for i in all_items %}
             {% if i.completed %}
-                <tr class="table-secondary">
-                    <td class="striker"><a href="{% url 'edit' i.id %}">{{ i.item }}</a></td>
-                    <td><center><a href="{% url 'uncross' i.id %}">Uncross</a></center></td>
-                    <td><center><a href="{% url 'delete' i.id %}">Delete</a></center> </td>
-                </tr>
+                <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">
+                        <div class="striker">
+                        {{ i.item }}
+                        </div>
+                    </span>
+                    <form class="mdl-list__item-secondary-action" action="{% url 'uncross' i.id %}" method="POST">
+                        {% csrf_token %}
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="list-checkbox-1">
+                            <input onChange='submit();' type="checkbox" id="list-checkbox-1" class="mdl-checkbox__input" checked />
+                        </label>
+                    </form>
+                </li>
+                
             {% else %}
-                <tr>
-                    <td><a href="{% url 'edit' i.id %}">{{ i.item }}</a></td>
-                    <td><center><a href="{% url 'cross_off' i.id %}">Cross Off</a></center></td>
-                    <td><center><a href="{% url 'delete' i.id %}">Delete</a></center> </td>
-                </tr>
+                
+                <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content">      
+                        <div class="striker">
+                        {{ i.item }}
+                        </div>
+                    </span>
+                    <form class="mdl-list__item-secondary-action" action="{% url 'cross_off' i.id %}" method = "POST">
+                        {% csrf_token %}
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="list-checkbox-1">
+                            <input onChange='submit();' type="checkbox" id="list-checkbox-1" class="mdl-checkbox__input" />
+                        </label>                        
+                    </form>
+
+                </li>
             {% endif %}
         {% endfor %}
-    </table>
+    </ul>
     {% endif %}
 
 {% endblock %}
+
+
+
+
+<!-- <ul class="demo-list-control mdl-list">
+  <li class="mdl-list__item">
+    <span class="mdl-list__item-primary-content">      
+      {{ i.item }}
+    </span>
+    <span class="mdl-list__item-secondary-action">
+      <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="list-checkbox-1">
+        <input type="checkbox" id="list-checkbox-1" class="mdl-checkbox__input" checked />
+      </label>
+    </span>
+  </li>
+</ul> -->
