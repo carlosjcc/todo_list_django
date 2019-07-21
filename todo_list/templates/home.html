@@ -15,18 +15,17 @@
     }
     </style>
 
-    {% if messages %}
+    
 
-        {% for m in messages %}
-            <div class="alert alert-success alert-dismissable" role="alert">
-                <button class="close" data-dismiss="alert">
-                    <small><sup>x</sup></small>
-                </button>
-                    {{ m }}
-            </div>
-        {% endfor %}
 
-    {% endif %}
+
+    <!-- Simple Textfield -->
+    <form method="POST">
+        {% csrf_token %}
+        <div class="mdl-textfield mdl-js-textfield">
+            <input class="mdl-textfield__input" type="search" placeholder="To-Do Item" name="item">        
+        </div>
+    </form>
     
     {% if all_items %}
     <ul class="demo-list-control mdl-list">
@@ -40,8 +39,8 @@
                     </span>
                     <form class="mdl-list__item-secondary-action" action="{% url 'uncross' i.id %}" method="POST">
                         {% csrf_token %}
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="list-checkbox-1">
-                            <input onChange='submit();' type="checkbox" id="list-checkbox-1" class="mdl-checkbox__input" checked />
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="list-checkbox-{{ i.id }}">
+                            <input onChange='submit();' type="checkbox" id="list-checkbox-{{ i.id }}" class="mdl-checkbox__input" checked />
                         </label>
                     </form>
                 </li>
@@ -50,14 +49,16 @@
                 
                 <li class="mdl-list__item">
                     <span class="mdl-list__item-primary-content">      
-                        <div class="striker">
                         {{ i.item }}
-                        </div>
                     </span>
                     <form class="mdl-list__item-secondary-action" action="{% url 'cross_off' i.id %}" method = "POST">
                         {% csrf_token %}
-                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="list-checkbox-1">
-                            <input onChange='submit();' type="checkbox" id="list-checkbox-1" class="mdl-checkbox__input" />
+                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="list-checkbox-{{ i.id }}">
+                            <input onChange='submit();' type="checkbox" id="list-checkbox-{{ i.id }}" class="mdl-checkbox__input" />
+
+                            <!-- <button class="mdl-button mdl-js-button mdl-button--icon mdl-button--colored" >
+                              <i class="material-icons">highlight_off</i>
+                            </button> -->
                         </label>                        
                     </form>
 
